@@ -1,0 +1,47 @@
+{
+  "chrome": {
+    "default": "93.0",
+    "versions": {
+      "93.0": {
+        "image": "selenoid/vnc_chrome:93.0",
+        "port": "4444",
+        "path": "/",
+        "selenoid:options": {"screenResolution": "1280x1024x24"}
+      }
+    }
+  },
+  "firefox": {
+    "default": "70.0",
+    "versions": {
+      "69.0": {
+        "image": "selenoid/vnc_firefox:69.0",
+        "port": "4444",
+        "path": "/wd/hub",
+        "selenoid:options": {"screenResolution": "1280x1024x24"}
+      },
+      "70.0": {
+        "image": "selenoid/vnc_firefox:70.0",
+        "port": "4444",
+        "path": "/wd/hub",
+        "selenoid:options": {"screenResolution": "1280x1024x24"}
+      }
+    }
+  },
+  "opera": {
+    "default": "65.0",
+    "versions": {
+      "64.0": {
+        "image": "selenoid/vnc_opera:64.0",
+        "port": "4444",
+        "path": "/wd/hub",
+        "selenoid:options": {"screenResolution": "1280x1024x24"}
+      },
+      "65.0": {
+        "image": "selenoid/vnc_opera:65.0",
+        "port": "4444",
+        "path": "/wd/hub",
+        "selenoid:options": {"screenResolution": "1280x1024x24"}
+      }
+    }
+  }
+}
