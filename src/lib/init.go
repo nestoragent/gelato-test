@@ -62,11 +62,13 @@ func setChromeCaps(cnf Conf) {
 	chromeCaps := map[string]interface{}{
 		"excludeSwitches": [1]string{"enable-automation"},
 		"args":            args,
+		"w3c": false,
 	}
 	caps = selenium.Capabilities{
 		"browserName":    "chrome",
 		"chromeOptions":  chromeCaps,
 		"browserVersion": "93.0",
-
+		"enableVNC": true,
+		"enableVideo": true,
 	}
 }

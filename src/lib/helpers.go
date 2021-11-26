@@ -48,4 +48,3 @@ func MustNotFindElement(wd selenium.WebDriver, by, value string) {
 	Expect(element).To(BeZero())
 	Expect(err).To(HaveOccurred())
 }
-

@@ -3,7 +3,6 @@ package pages
 import (
 	"fmt"
 	. "gelato-test/src/lib"
-	"github.com/stretchr/testify/assert"
 	"github.com/tebeka/selenium"
 	"time"
 )
@@ -47,13 +46,15 @@ func (s *Page) FindElementByTag(locator string) selenium.WebElement {
 }
 
 func (s *Page) FindElementByClass(locator string) selenium.WebElement {
-	element, _ := s.Driver.FindElement(selenium.ByClassName, locator)
+	element, err := s.Driver.FindElement(selenium.ByClassName, locator)
+	if err != nil {
+		panic(fmt.Sprintf("Error find element by locator %v, err: %v\n", locator, err))
+	}
 	return element
 }
 
 func (s *Page) FindElementByCss(locator string) selenium.WebElement {
-	element, err := s.Driver.FindElement(selenium.ByCSSSelector, locator)
-	ErrCheck(err)
+	element, _ := s.Driver.FindElement(selenium.ByCSSSelector, locator)
 	return element
 }
 
@@ -106,23 +107,19 @@ func (s *Page) MouseHoverToElement(locator string) selenium.WebElement {
 	return element
 }
 
+func (s *Page) MouseHoverToElementByXpath(locator string) selenium.WebElement {
+	element, errElem := s.Driver.FindElement(selenium.ByXPATH, locator)
+	if errElem != nil {
+		panic(fmt.Sprintf("Error in the local element, err: %v", errElem))
+	}
+	err := element.MoveTo(0, 0)
+	if err != nil {
+		panic(fmt.Sprintf("Error in the MouseHoverToElement, err: %v", err))
+	}
+	return element
+}
+
 func (s *Page) WaitWithTimeout(condition selenium.Condition, timeout time.Duration) {
 	ErrCheck(s.Driver.WaitWithTimeout(condition, timeout))
 }
 
-
-func assertTrue(result bool) error {
-	var t asserter
-	assert.True(&t, result)
-
-	return t.err
-}
-
-// asserter is used to be able to retrieve the error reported by the called assertion
-type asserter struct {
-	err error
-}
-
-func (a *asserter) Errorf(format string, args ...interface{}) {
-	a.err = fmt.Errorf(format, args...)
-}

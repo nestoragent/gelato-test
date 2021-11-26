@@ -1,30 +1,48 @@
 package stepDefinitions
 
 import (
-	"fmt"
+	"context"
 	. "gelato-test/src/lib"
 	"gelato-test/src/pages"
 	"github.com/cucumber/godog"
 )
 
+var (
+	page pages.Page
+)
+
 func InitializeTestSuite(ctx *godog.TestSuiteContext) {
-	ctx.BeforeSuite(func() {
-		fmt.Println("Work BeforeSuite!")
-		RegisterFailHandler(Fail)
-		DefaultConf()
-		//GetDriver()
-	})
+	//ctx.BeforeSuite(func() {
+	//	fmt.Println("Before Suite")
+	//})
 }
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
-	fmt.Println("Work InitializeScenario!")
-	//ctx.BeforeScenario(func(*godog.Scenario) {
-	//	Godogs = 0 // clean the state before every scenario
-	//})
+
+	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
+		RegisterFailHandler(Fail)
+		DefaultConf()
+		page = pages.Page{Driver: GetDriver()}
+		return ctx, nil
+	})
 
 	ctx.Step(`^go to main todos page$`, goToMainPage)
+	ctx.Step(`^check that input is empty$`, checkThatInputIsEmpty)
 	ctx.Step(`^create a new task "([^"]*)"$`, createANewToDo)
 	ctx.Step(`^task "([^"]*)" exist in the list$`, taskExistInTheList)
+	ctx.Step(`^task "([^"]*)" not exist in the list$`, taskNotExistInTheList)
+	ctx.Step(`^item count should be "([^"]*)"$`, checkItemCount)
+	ctx.Step(`^mark item "([^"]*)" as completed$`, markAsCompleted)
+	ctx.Step(`^check that item "([^"]*)" is completed$`, checkThatTaskCompleted)
+	ctx.Step(`^switch tab to "([^"]*)"$`, switchTab)
+	ctx.Step(`^delete item "([^"]*)"$`, deleteItem)
+	ctx.Step(`^delete completed items$`, deleteCompletedItem)
+	ctx.Step(`^rename item "([^"]*)" to "([^"]*)"$`, renameItem)
+
+	ctx.After(func(ctx context.Context, sc *godog.Scenario, err error) (context.Context, error) {
+		CloseDriver()
+		return ctx, err
+	})
 }
 
 func goToMainPage() {
@@ -32,13 +50,63 @@ func goToMainPage() {
 }
 
 func createANewToDo(name string) {
-	var page = pages.Page{Driver: GetDriver()}
 	todos := pages.ToDos{Page: page}
 	todos.AddToDo(name)
 }
 
 func taskExistInTheList(name string) {
-	var page = pages.Page{Driver: GetDriver()}
 	todos := pages.ToDos{Page: page}
 	todos.CheckThatRowExist(name)
+	TakeScreenshot(GetDriver(), "taskExistInTheList")
+}
+
+func taskNotExistInTheList(name string) {
+	todos := pages.ToDos{Page: page}
+	todos.CheckThatItemNotInList(name)
+	TakeScreenshot(GetDriver(), "taskNotExistInTheList")
+}
+
+func checkThatInputIsEmpty() {
+	todos := pages.ToDos{Page: page}
+	todos.CheckThatInputIsEmpty()
+	TakeScreenshot(GetDriver(), "checkThatInputIsEmpty")
+}
+
+func checkItemCount(count string) {
+	todos := pages.ToDos{Page: page}
+	todos.CheckItemsCount(count)
+	TakeScreenshot(GetDriver(), "checkItemCount")
+}
+
+func markAsCompleted(name string) {
+	todos := pages.ToDos{Page: page}
+	todos.MarkAsCompleted(name)
+	TakeScreenshot(GetDriver(), "markAsCompleted")
+}
+
+func checkThatTaskCompleted(name string) {
+	todos := pages.ToDos{Page: page}
+	todos.CheckThatTaskCompleted(name)
+	TakeScreenshot(GetDriver(), "checkThatTaskCompleted")
+}
+
+func switchTab(tabName string) {
+	todos := pages.ToDos{Page: page}
+	todos.SwitchTab(tabName)
+	TakeScreenshot(GetDriver(), "switchTab")
+}
+
+func deleteItem(itemName string) {
+	todos := pages.ToDos{Page: page}
+	todos.DeleteItem(itemName)
+}
+
+func deleteCompletedItem() {
+	todos := pages.ToDos{Page: page}
+	todos.DeleteCompletedItem()
+}
+
+func renameItem(oldName string, newName string) {
+	todos := pages.ToDos{Page: page}
+	todos.RenameItem(oldName, newName)
 }

@@ -16,7 +16,6 @@ func GetDriver() selenium.WebDriver {
 }
 
 func InitDriver() selenium.WebDriver {
-	//driver, err := selenium.NewRemote(GetCaps(), "http://localhost:4444/wd/hub")
 	driver, err := selenium.NewRemote(GetCaps(), fmt.Sprintf("http://localhost:%d/wd/hub", GetConf().Port))
 
 	if err != nil {
@@ -26,4 +25,10 @@ func InitDriver() selenium.WebDriver {
 	Expect(driver).ToNot(BeZero())
 	ErrCheck(driver.SetImplicitWaitTimeout(DefTimeout))
 	return driver
+}
+
+func CloseDriver() {
+	GetDriver().Close()
+	GetDriver().Quit()
+	driver = nil
 }
