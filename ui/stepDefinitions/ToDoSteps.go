@@ -3,7 +3,7 @@ package stepDefinitions
 import (
 	"context"
 	. "gelato-test/src/lib"
-	"gelato-test/src/pages"
+	pages "gelato-test/ui/pages"
 	"github.com/cucumber/godog"
 )
 

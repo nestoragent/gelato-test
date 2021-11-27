@@ -1,7 +1,7 @@
-package main_test
+package ui_test
 
 import (
-	. "gelato-test/src/stepDefinitions"
+	. "gelato-test/ui/stepDefinitions"
 	"github.com/cucumber/godog"
 	"github.com/cucumber/godog/colors"
 	"github.com/spf13/pflag" // godog v0.11.0 and later
