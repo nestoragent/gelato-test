@@ -28,15 +28,12 @@ var (
 
 func (s *ToDos) AddToDo(toDoName string) *ToDos {
 	s.Page.FindElementByCss(cssInputNewToDo).SendKeys(toDoName)
-	TakeScreenshot(GetDriver(), "AddToDo"+toDoName)
 	s.Page.FindElementByCss(cssInputNewToDo).SendKeys(selenium.EnterKey)
 	return &ToDos{Page: s.Page}
 }
 
 func (s *ToDos) CheckThatRowExist(toDoName string) *ToDos {
 	var todos = s.Page.FindElementsByXpath(fmt.Sprintf(xpathToDoRow, toDoName))
-
-	TakeScreenshot(GetDriver(), "CheckThatRowExist"+toDoName)
 	if len(todos) == 0 {
 		panic(fmt.Sprintf("Can not find the item. Actual size: %v", len(todos)))
 	}
@@ -120,7 +117,6 @@ func (s *ToDos) RenameItem(oldName string, newName string) *ToDos {
 		panic(err)
 	}
 
-	TakeScreenshot(GetDriver(), "RenameItem1"+newName)
 	s.Page.WaitWithTimeout(func(driver selenium.WebDriver) (bool, error) {
 		return s.Page.FindElementByCss(cssToDoRowRename).IsEnabled()
 	}, 5*time.Second)
@@ -134,13 +130,11 @@ func (s *ToDos) RenameItem(oldName string, newName string) *ToDos {
 			panic(err)
 		}
 	}
-	TakeScreenshot(GetDriver(), "RenameItem2"+newName)
 
 	err = inputRename.SendKeys(newName)
 	if err != nil {
 		panic(err)
 	}
-	TakeScreenshot(GetDriver(), "RenameItem3"+newName)
 	err = s.Page.FindElementByCss(cssInputNewToDo).Click()
 	if err != nil {
 		panic(err)

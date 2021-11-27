@@ -57,43 +57,36 @@ func createANewToDo(name string) {
 func taskExistInTheList(name string) {
 	todos := pages.ToDos{Page: page}
 	todos.CheckThatRowExist(name)
-	TakeScreenshot(GetDriver(), "taskExistInTheList")
 }
 
 func taskNotExistInTheList(name string) {
 	todos := pages.ToDos{Page: page}
 	todos.CheckThatItemNotInList(name)
-	TakeScreenshot(GetDriver(), "taskNotExistInTheList")
 }
 
 func checkThatInputIsEmpty() {
 	todos := pages.ToDos{Page: page}
 	todos.CheckThatInputIsEmpty()
-	TakeScreenshot(GetDriver(), "checkThatInputIsEmpty")
 }
 
 func checkItemCount(count string) {
 	todos := pages.ToDos{Page: page}
 	todos.CheckItemsCount(count)
-	TakeScreenshot(GetDriver(), "checkItemCount")
 }
 
 func markAsCompleted(name string) {
 	todos := pages.ToDos{Page: page}
 	todos.MarkAsCompleted(name)
-	TakeScreenshot(GetDriver(), "markAsCompleted")
 }
 
 func checkThatTaskCompleted(name string) {
 	todos := pages.ToDos{Page: page}
 	todos.CheckThatTaskCompleted(name)
-	TakeScreenshot(GetDriver(), "checkThatTaskCompleted")
 }
 
 func switchTab(tabName string) {
 	todos := pages.ToDos{Page: page}
 	todos.SwitchTab(tabName)
-	TakeScreenshot(GetDriver(), "switchTab")
 }
 
 func deleteItem(itemName string) {
